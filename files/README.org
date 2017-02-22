@@ -25,4 +25,4 @@
 - choice.txt：选择题
 - correct.txt：判断题
 - notes.txt：简答题
-- presentation.txt：简单题
+- presentation.txt：论述题
