@@ -1,0 +1,15 @@
+#+TITLE: 收费站业务考试题库bash和网页版实现
+* bash实现
+
+  将各类题目及其答案先转换为json文件操作。
+
+  - [[file:fill.sh][fill.sh]] ：填空题脚本
+  - [[file:choice.sh][choice.sh]] ：选择题脚本（含多选）
+  - [[file:correct.sh][correct.sh]] ： 对错判断脚本
+  - [[file:notes.sh][notes.sh]] ：简答题脚本
+  - [[file:presentations.sh][presentation.sh]] ：陈述题脚本
+  - [[file:main.sh][main.sh]] ：主程序脚本
+
+* 网页版实现
+
+  *将实现页面放到github的主页中。*
