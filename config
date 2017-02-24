@@ -20,4 +20,13 @@ if [[ ! $(which jq) ]]; then
 	echo "安装'jq'程序"
 fi
 
+echo "检查$HOME/bin文件夹中依赖的程序是否存在"
+LOCAL_PROG=(blue yellow)
+
+for prog in "${LOCAL_PROG[@]}"; do
+	if [[ ! -f $HOME/bin/$prog ]]; then
+		echo "不存在本地程序$HOME/$prog"
+	fi
+done
+
 echo -e "\n配置成功!"
