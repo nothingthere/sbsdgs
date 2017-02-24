@@ -15,4 +15,9 @@ else
 	fi
 fi
 
+echo "配置解析JSON文件的命令'jq'"
+if [[ ! $(which jq) ]]; then
+	echo "安装'jq'程序"
+fi
+
 echo -e "\n配置成功!"
