@@ -5,9 +5,14 @@ FILE=files/fill.json
 question=						# 问题
 answer=							# 答案
 answer_num=						# 答案个数
-COUNT=$(jq '.|length' $FILE)			# 题目数量
+COUNT=$(jq '.|length' $FILE)			# 题目和答案数量
 index=0									# 当前第几题
-# motion=									# 下一步动作
+
+# 如果第一个参数是数字，则从该题开始做
+if [[ (-n $1) && ($1 =~ [0-9]+) && $(( $1 - 1 >= 0 )) ]]; then
+	index=$(($1 - 1))
+fi
+# echo $index
 
 # 退出
 function quit {
