@@ -31,7 +31,7 @@ function render_question {
 	question=$(trim_quote $question)
 
 	# 蓝色
-	printf "$((index + 1)). %s\n\n" $(blue $question)
+	printf "$((index + 1))/$COUNT： %s\n\n" $(blue $question)
 }
 
 # 打印输入提示

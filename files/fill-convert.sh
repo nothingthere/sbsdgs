@@ -1,14 +1,13 @@
 #!/bin/bash
-# 用法：sed -Ei fill.sed 文件
 echo "将fill.txt文件转换为json文件"
 
 OUTPUT="fill2.json"				# 新生成文件
 
-if [[ -e fill2.json ]]; then
-	rm fill2.json
-	cp fill.txt fill2.json
+if [[ -e $OUTPUT ]]; then
+	rm $OUTPUT
+	cp fill.txt $OUTPUT
 else
-	cp fill.txt fill2.json
+	cp fill.txt $OUTPUT
 fi
 
 if $(sed -Ei 's_^[0-9]{1,3}、(.*)_{"Q":"\1",\n"A":[]},\n_' $OUTPUT); then
