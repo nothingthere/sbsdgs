@@ -16,6 +16,7 @@ fi
 
 # 退出
 function quit {
+	clear
 	echo "再见！"
 	exit
 }
