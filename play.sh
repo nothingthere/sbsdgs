@@ -201,7 +201,7 @@ EOF
 		q|Q) quit
 			 ;;
 		r|R) index=0
-			 main;
+			 main
 			 ;;
 		*) choice_at_last_test
 		   ;;
