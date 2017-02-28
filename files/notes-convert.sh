@@ -1,4 +1,5 @@
 #!/bin/bash
+# 可用于转换陈述题文本
 echo "将notes.txt转换为json文件"
 OUTPUT="notes2.json"
 
