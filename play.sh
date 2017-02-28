@@ -146,7 +146,77 @@ EOF
 
 # 检查答案
 function check_answer {
-	echo "你的回答是：$1"
+	echo "你的回答是：$1" # TEST
+	# echo "正确答案是：$answer"	# TEST
+	local correct=true
+
+	if [[ $type == f ]]; then 	# 如果是填空题，则逐个检查
+		# 逐个检查answer中数组元素是否都出现在提交的答案内
+		# 此算法存在的问题：
+		# 1. 填空的顺序错误也认为是正确
+		# 2. 每个空的答案不间隔开也可能判断为正确答案
+		for((i=0; i < answer_num; i++)); do
+			if [[ ! $(echo $1 | grep $(trim_quote $(echo $answer | jq ".[$i]"))) ]]; then
+				correct=false
+				break
+			fi
+		done
+	else						# 否则比较答案与提交字符串即可
+		if [[ ! ($1 == $(trim_quote $answer)) ]]; then
+			correct=false
+		fi
+	fi
+
+	# 更加答案正确与否提供交互
+	if $correct; then
+		when_answer_correct
+	else
+		when_answer_incorrect
+	fi
+}
+
+# 答案正确后的交互
+function when_answer_correct {
+	echo $(blue "√√√")
+	cat <<EOF
+q)退出
+n)下一题
+EOF
+
+	local motion=
+	read -p "> " motion
+	case $motion in
+		q|Q) quit
+			 ;;
+		n|N) ((++index))
+			 main
+			 ;;
+		*) when_answer_correct
+	esac
+}
+
+#答案错误后的交互
+function when_answer_incorrect {
+	echo -e "\a" $(yellow "XXX")
+	cat <<EOF
+q) 退出
+r) 重做
+h) 提示
+EOF
+
+	local motion
+	read -p "> " motion
+
+	case $motion in
+		q|Q) quit
+			 ;;
+		r|R) main
+			 ;;
+		h|H) print_hint
+			 ;;
+		*) when_answer_incorrect
+		   ;;
+	esac
 }
 
 # 打印问题
