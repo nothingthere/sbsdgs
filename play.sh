@@ -42,6 +42,7 @@ while [[ -n $1 ]]; do
 					 if [[ $1 =~ ^[1-9][0-9]*$ ]]; then
 						 num=$1
 					 else
+
 						 echo "数字参数不正确" # TEST
 						 usage
 					 fi
@@ -146,7 +147,7 @@ EOF
 
 # 检查答案
 function check_answer {
-	echo "你的回答是：$1" # TEST
+	# echo "你的回答是：$1" # TEST
 	# echo "正确答案是：$answer"	# TEST
 	local correct=true
 
