@@ -47,8 +47,7 @@ while [[ -n $1 ]]; do
 					 if [[ $1 =~ ^[1-9][0-9]*$ ]]; then
 						 num=$1
 					 else
-
-						 echo "数字参数不正确" # TEST
+						 echo "题号参数不正确" # TEST
 						 usage
 					 fi
 					 ;;
