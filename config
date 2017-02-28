@@ -18,6 +18,7 @@ fi
 echo "配置解析JSON文件的命令'jq'"
 if [[ ! $(which jq) ]]; then
 	echo "安装'jq'程序"
+	sudo apt-get isntall jq
 fi
 
 echo "检查$HOME/bin文件夹中依赖的程序是否存在"

@@ -4,19 +4,24 @@ function usage {
 	echo "${0##*/} [-t|--type [f|c|y|n|p]] [-n|--number 正整数]" >&2
 	cat <<EOF
 --type参数的值中：
-f表示填空题
-c表示选择题
-y表示判读题
-n表示简答题
-p表示陈述题
+    f表示填空题
+    c表示选择题
+    y表示判读题
+    n表示简答题
+    p表示陈述题
 EOF
 
 	exit 1
 }
 
-type=f							#题型可为f、c、y、n或p
-DIR=files/						# 存放题库文件的文件夹
-file=fill.json							# 题库文件
+# 语音提示
+function say {
+    spd-say --voice-type child_female "$1"
+}
+
+type=f			#题型可为f、c、y、n或p
+DIR=files/		# 存放题库文件的文件夹
+file=fill.json	# 题库文件
 count=			# 题目和答案数量
 num=1			# 第几题（输入索引）
 index=$(( num - 1))									# 当前第几题（数组索引）
@@ -125,9 +130,9 @@ function print_hint {
 # 显示正确答案后的交互
 function after_print_hint {
     cat <<EOF
-q)退出
-r)重做
-n)下一题
+q) 退出
+r) 重做
+n) 下一题
 EOF
 	local motion
 	read -p "> " motion
@@ -179,9 +184,10 @@ function check_answer {
 # 答案正确后的交互
 function when_answer_correct {
 	echo $(blue "√√√")
+	say 'Yes, you got it.'
 	cat <<EOF
-q)退出
-n)下一题
+q) 退出
+n) 下一题
 EOF
 
 	local motion=
@@ -198,7 +204,8 @@ EOF
 
 #答案错误后的交互
 function when_answer_incorrect {
-	echo -e "\a" $(yellow "XXX")
+	echo  $(yellow "XXX")
+	say 'no'
 	cat <<EOF
 q) 退出
 r) 重做
@@ -239,7 +246,7 @@ function print_question {
 q) 退出
 h) 提示
 n) 下一题
-Enter) 检查答案
+Enter) 确定
 EOF
 	printf "\n"
 	read -p "答： " reply
@@ -261,8 +268,8 @@ EOF
 # 到最后一题时再继续的交互
 function choice_at_last_test {
 	cat <<EOF
-q)退出
-r)再做一遍
+q) 退出
+r) 再做一遍
 EOF
 
 	local motion
