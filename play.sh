@@ -111,7 +111,7 @@ function quit {
 }
 
 function print_hint {
-	printf "\n正确答案是："
+	printf "\n正确答案是：\n"
 
 	# 如果是填空题，答案为数组，循环打印
 	if [[ $type == f ]]; then
@@ -120,8 +120,13 @@ function print_hint {
 		done
 		printf "\n"
 	else # 其他类型题目答案为字符串，打印即可
-		echo $(blue $(trim_quote $answer))
-		printf "\n"
+		if [[ $type == n || $type == p ]]; then # 如果是简答题个陈述题，答案中的"(1) (2) ..."等分点需换行打印
+			# echo "简答题或陈述题"				# TEST
+			printf "%s\n" $(echo $(blue $(trim_quote $answer)) | sed -E 's_(\([[:digit:]]+\))_\n\1_g')
+		else
+			echo $(blue $(trim_quote $answer))
+			printf "\n"
+		fi
 	fi
 
 	after_print_hint
@@ -167,7 +172,12 @@ function check_answer {
 				break
 			fi
 		done
-	else						# 否则比较答案与提交字符串即可
+	else
+		# 简答题和陈述题不进行字符串比较以确定正确与否，始终提示错误
+		if [[ $type == n || $type == p ]]; then
+			correct=false
+		fi
+		# 否则比较答案与提交字符串即可
 		if [[ ! ($1 == $(trim_quote $answer)) ]]; then
 			correct=false
 		fi
@@ -204,8 +214,12 @@ EOF
 
 #答案错误后的交互
 function when_answer_incorrect {
-	echo  $(yellow "XXX")
-	say 'no'
+	if [[ $type == n || $type == p ]]; then
+		echo $(brown "简答题和陈述题不进行答案检查。自行查看提示!")
+	else
+		echo  $(yellow "XXX")
+		say 'no'
+	fi
 	cat <<EOF
 q) 退出
 r) 重做
