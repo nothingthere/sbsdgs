@@ -1,14 +1,73 @@
 #+TITLE: 收费站业务考试题库bash和网页版实现
 * bash实现
+** 使用方法
 
-  将各类题目及其答案先转换为json文件操作。
+   #+BEGIN_EXAMPLE
+     ./config #检查本地配置
+     ./play.sh [-t|--tyope [f|c|y|n|p].] [-n|--number 正整数] #运行脚本
+   #+END_EXAMPLE
 
-  - [[file:fill.sh][fill.sh]] ：填空题脚本
-  - [[file:choice.sh][choice.sh]] ：选择题脚本（含多选）
-  - [[file:correct.sh][correct.sh]] ： 对错判断脚本
-  - [[file:notes.sh][notes.sh]] ：简答题脚本
-  - [[file:presentations.sh][presentation.sh]] ：陈述题脚本
-  - [[file:main.sh][main.sh]] ：主程序脚本
+   file文件夹中的JSON文件为题库文件，内容和格式分别为：
+
+   - fill.json：填空题，数据格式为：
+
+	 #+BEGIN_SRC json
+       [
+           {"Q":"问题",
+            "A":["答案1", "答案2", ...]
+           }
+
+           ...
+       ]
+	 #+END_SRC
+
+   - choice.json：选择题（含单选和多选），数据格式为：
+
+	 #+BEGIN_SRC json
+       [
+           {"Q":"问题",
+            "A":"ABC"
+           }
+
+           ...
+       ]
+	 #+END_SRC
+
+   - correct.json：判断题，数据格式为：
+
+	 #+BEGIN_SRC json
+       [
+           {"Q":"问题",
+            "A": "yes|no"
+           }
+
+           ...
+       ]
+	 #+END_SRC
+
+   - notes.json：简答题，数据格式为：
+
+	 #+BEGIN_SRC json
+       [
+           {"Q":"问题",
+            "A":"答案"
+           }
+
+           ...
+       ]
+	 #+END_SRC
+
+   - presentation.json：陈述题，数据格式为（与notes.json文件格式相同）：
+
+	 #+BEGIN_SRC json
+       [
+           {"Q":"问题",
+            "A":"答案"
+           }
+
+           ...
+       ]
+	 #+END_SRC
 
 * 网页版实现
 
