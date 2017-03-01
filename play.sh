@@ -10,7 +10,7 @@ function usage {
     n表示简答题
     p表示陈述题
 -n --number：代表第几题的正整数
--r --reverse：是否从最后一题开始做，不需参数。如果逆序，需指定-n|--number参数
+-r --reverse：是否从最后一题开始做，不需参数。
 
 EOF
 
@@ -19,7 +19,7 @@ EOF
 
 # 语音提示
 function say {
-    spd-say --voice-type child_female "$1"
+    spd-say --voice-type child_female "$1" 1 >& /dev/null
 }
 
 type=f			#题型可为f、c、y、n或p
@@ -299,6 +299,7 @@ EOF
 			 main
 			 ;;
 		*) check_answer "${reply[@]}"		# 提交答案
+		   ;;
 	esac
 
 }
