@@ -1,14 +1,17 @@
 #!/bin/bash
 #题库测试总脚本
 function usage {
-	echo "${0##*/} [-t|--type [f|c|y|n|p]] [-n|--number 正整数]" >&2
+	echo "${0##*/} [-t|--type [f|c|y|n|p]] [-n|--number 正整数] [-r|--reverse]" >&2
 	cat <<EOF
---type参数的值中：
+-t --type参数的值中：
     f表示填空题
     c表示选择题
     y表示判读题
     n表示简答题
     p表示陈述题
+-n --number：代表第几题的正整数
+-r --reverse：是否从最后一题开始做，不需参数。如果逆序，需指定-n|--number参数
+
 EOF
 
 	exit 1
@@ -25,6 +28,7 @@ file=fill.json	# 题库文件
 count=			# 题目和答案数量
 num=1			# 第几题（输入索引）
 index=$(( num - 1))									# 当前第几题（数组索引）
+reverse=false										# 是否从最后一题开始做
 
 question=						# 问题
 answer=							# 答案
@@ -51,6 +55,8 @@ while [[ -n $1 ]]; do
 						 usage
 					 fi
 					 ;;
+		-r|--reverse) reverse=true
+					  ;;
 		*) usage
 		   ;;
 	esac
@@ -92,7 +98,13 @@ if (( num > count )); then
 	echo "最多只有'$count'道题，第'$num'题不存在" >&2
 	exit 1
 fi
-index=$(( num - 1))				# 确定数组索引
+
+# 最后确定索引
+if [[ $reverse == true  && $num == 1 ]]; then
+	index=$((count - 1 ))
+else
+	index=$(( num - 1))				# 确定数组索引
+fi
 
 ###############
 # 原材料准备完毕，接下来为打印和逻辑判断
@@ -144,7 +156,11 @@ EOF
 	case $motion in
 		q|Q) quit
 			 ;;
-		n|N) ((index++))
+		n|N) if [[ $reverse == true ]]; then
+				 ((index--))
+			 else
+				 ((index++))
+			 fi
 			 main
 			 ;;
 		r|R) main
@@ -204,10 +220,15 @@ EOF
 	case $motion in
 		q|Q) quit
 			 ;;
-		n|N) ((++index))
+		n|N) if [[ $reverse == true ]]; then
+				 ((--index))
+			 else
+				 ((++index))
+			 fi
 			 main
 			 ;;
 		*) when_answer_correct
+		   ;;
 	esac
 }
 
@@ -270,7 +291,11 @@ EOF
 			 ;;
 		h|H) print_hint 		# 不会做给出答案
 			 ;;
-		n|N) ((++index))			# 跳过此题
+		n|N) if [[ $reverse == true ]]; then # 跳过此题
+				 ((--index))
+			 else
+				 ((++index))
+			 fi
 			 main
 			 ;;
 		*) check_answer "${reply[@]}"		# 提交答案
@@ -291,7 +316,11 @@ EOF
 	case $motion in
 		q|Q) quit
 			 ;;
-		r|R) index=0
+		r|R) if [[ $reverse == true ]]; then
+				 index=$((count - 1))
+			 else
+				 index=0
+			 fi
 			 main
 			 ;;
 		*) choice_at_last_test
@@ -301,9 +330,20 @@ EOF
 
 function main {
 	#主函数
-	if (( index == count)); then # 做到最后一题
-		printf "\n已经是最后一题\n"
-		choice_at_last_test
+	# echo "\$reverse = $reverse" # TEST
+	# echo "\$index = $index"		# TEST
+	# echo "\$count = $count" 	# TEST
+	# 确定做到最后一题后的交互
+	if [[ $reverse == true ]]; then
+		if (( index < 0 )); then # 逆序做，做到第一题
+			printf "\n已经是第一题\n"
+			choice_at_last_test
+		fi
+	else
+		if (( index >= count )); then # 做到最后一题
+			printf "\n已经是最后一题\n"
+			choice_at_last_test
+		fi
 	fi
 
 	clear
