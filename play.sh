@@ -283,7 +283,7 @@ n) 下一题
 Enter) 确定
 EOF
 	printf "\n"
-	read -p "答： " reply
+	read -e -p "答： " reply
 
 	# 处理输入答案
 	case $reply in
