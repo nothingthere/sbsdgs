@@ -127,15 +127,15 @@ function print_hint {
 	# 如果是填空题，答案为数组，循环打印
 	if [[ $type == f ]]; then
 		for((i=0; i < answer_num; i++)); do
-			printf "%s " $(claudio_blue $(trim_quote $(echo $answer | jq ".[$i]")))
+			printf "%s " $(claudio_color --color blue  $(trim_quote $(echo $answer | jq ".[$i]")))
 		done
 		printf "\n"
 	else # 其他类型题目答案为字符串，打印即可
 		if [[ $type == n || $type == p ]]; then # 如果是简答题个陈述题，答案中的"(1) (2) ..."等分点需换行打印
 			# echo "简答题或陈述题"				# TEST
-			printf "%s\n" $(echo $(claudio_blue $(trim_quote $answer)) | sed -E 's_(\([[:digit:]]+\))_\n\1_g')
+			printf "%s\n" $(echo $(claudio_color --color blue $(trim_quote $answer)) | sed -E 's_(\([[:digit:]]+\))_\n\1_g')
 		else
-			echo $(claudio_blue $(trim_quote $answer))
+			echo $(claudio_color --color $(trim_quote $answer))
 			printf "\n"
 		fi
 	fi
@@ -235,9 +235,9 @@ EOF
 #答案错误后的交互
 function when_answer_incorrect {
 	if [[ $type == n || $type == p ]]; then
-		echo $(claudio_brown "简答题和陈述题不进行答案检查。自行查看提示!")
+		echo $(claudio_color --color brown "简答题和陈述题不进行答案检查。自行查看提示!")
 	else
-		echo  $(claudio_yellow "XXX")
+		echo  $(claudio_color --color yellow "XXX")
 		say 'no'
 	fi
 	cat <<EOF
@@ -264,14 +264,14 @@ EOF
 # 打印问题
 function print_question {
 	# 蓝色打印问题
-	printf "($((index + 1))/$count)： %s\n" $(claudio_blue $( trim_quote $question))
+	printf "($((index + 1))/$count)： %s\n" $(claudio_color --color blue $( trim_quote $question))
 
 	# 如果是选择题，则打印选项
 	local select_num=$(echo $select | jq '.|length')			# 选项个数
 	local ICONS=(A B C D E F G H)
 	if [[ $type == c ]]; then
 		for((i=0; i < select_num; i++)); do
-			printf "\t%s. %s\n" ${ICONS[$i]} $(claudio_blue $(trim_quote $(echo $select | jq ".[$i]")))
+			printf "\t%s. %s\n" ${ICONS[$i]} $(claudio_color -color blue $(trim_quote $(echo $select | jq ".[$i]")))
 		done
 	fi
 
