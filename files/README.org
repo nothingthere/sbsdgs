@@ -1,2 +1,0 @@
-#+TITLE: JSON数据文件
-* 含原来的word文件，以及转换后的JSON文件
