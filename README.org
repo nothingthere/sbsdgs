@@ -2,6 +2,7 @@
 * bash实现
 ** 使用方法
 
+
    #+BEGIN_EXAMPLE
      ./config #检查本地配置
      ./play.sh [-t|--tyope [f|c|y|n|p].] [-n|--number 正整数] #运行脚本
